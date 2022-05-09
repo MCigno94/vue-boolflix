@@ -1,9 +1,29 @@
 <template>
   <div id="app">
+    <header>
     <img src="https://fontmeme.com/permalink/220509/c0312dea3f976bc738b9ef8200ecfd49.png" alt="3d-rotation" border="0">
     <div>movies</div>
     <input v-model="query" type="text">
     <button @click="callApi">clik</button>
+    </header>
+    <main>
+      <div class="container">
+        <div class="row row-cols-6">
+          <div class="cols" v-for="movie in movies" :key="movie.id">
+            <div class="card">
+              <img :src="movie.backdrop_path" alt="">
+              <div class="card-body">
+                <h3>{{movie.title}}</h3>
+                <p>{{movie.id}}</p>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.cols -->
+        </div>
+      </div>
+      <!-- /.container -->
+    </main>
   </div>
 </template>
 
