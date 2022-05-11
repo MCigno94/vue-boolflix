@@ -14,113 +14,123 @@
       <!-- form -->
     </header>
     <main>
-      <div class="container d-flex flex-wrap align-content-start">
-        <h4 v-if="movies.length > 0">
-          MOVIES
-          <span>
-            <font-awesome-icon icon="fa-solid fa-film" />
-          </span>
-          </h4>
-        <div class="row row-cols-6 w-100 g-2">
-          <div class="cols" v-for="movie in movies" :key="movie.id">
-            <div class="container_card">
-            <div class="card">
-              <div class="front">
-                <img :src="movie.poster_path ? ('https://image.tmdb.org/t/p/w342' + movie.poster_path) : 'https://www.stardust.it/img/web/film-thumb-layer-placeholder.png'" :alt="movie.title">
-              </div>
-              <!-- /.front -->
-              <div class="back">
-                <div class="description">
-                    <p>
-                      <strong>Titolo:</strong>
-                      {{movie.title}}
-                    </p>
-                    <p>
-                      <strong>Titolo originale:</strong>
-                      {{movie.original_title}}
-                    </p>
-
-                  <p class="languages">
-                    <strong>Lingua: </strong>
-                    <flag class="flag_icon" :iso ="flag(movie)"/>
-                  </p>
-                  <!-- /.languages -->          
-                  <p class="vote">
-                    <strong>Voto:</strong>
-                    <span v-for="vote in votes" :key="vote">
-                      <font-awesome-icon :class="stars(movie) > vote ? 'star_vote' : 'star_no_vote'" icon="fa-solid fa-star" />            
-                    </span>
-                  </p>
-                  <!-- /.vote -->
-                  <p class="overview" v-if="movie.overview">
-                    <strong>Overview: </strong>
-                    {{movie.overview}}
-                  </p>
-                  <!-- /.overview -->
-                </div>
-                <!-- /.card-body -->
-              </div>
-              <!-- /.back -->
-            </div>
-            <!-- /.card -->
-            </div>
-            <!-- /.container_card -->
+      <div class="container">
+        <section class="films" v-if="movies.length > 0">
+          <div class="title_section">
+            <h4>MOVIES</h4>
+            <span>
+              <font-awesome-icon icon="fa-solid fa-film" />
+            </span>
           </div>
-          <!-- /.cols -->          
-        </div>
-        <h4 v-if="series.length > 0">
-          SERIES
-          <span>
-            <font-awesome-icon icon="fa-solid fa-film" />
-          </span>
-          </h4>
-        <div class="row row-cols-6 w-100 g-2">
-          <div class="cols" v-for="serie in series" :key="serie.id">
-            <div class="container_card">
+            <!-- /.title_section -->
+          <div class="row row-cols-6 w-100 g-2">
+            <div class="cols" v-for="movie in movies" :key="movie.id">
+              <div class="container_card">
               <div class="card">
                 <div class="front">
-                  <img :src="serie.poster_path ? ('https://image.tmdb.org/t/p/w342' + serie.poster_path) : 'https://www.stardust.it/img/web/film-thumb-layer-placeholder.png'" :alt="serie.title">
+                  <img :src="movie.poster_path ? ('https://image.tmdb.org/t/p/w342' + movie.poster_path) : 'https://www.stardust.it/img/web/film-thumb-layer-placeholder.png'" :alt="movie.title">
                 </div>
                 <!-- /.front -->
                 <div class="back">
-                <div class="description">
-                    <p>
-                      <strong>Titolo:</strong>
-                      {{serie.name}}
+                  <div class="description">
+                      <p>
+                        <strong>Titolo:</strong>
+                        {{movie.title}}
+                      </p>
+                      <p>
+                        <strong>Titolo originale:</strong>
+                        {{movie.original_title}}
+                      </p>
+
+                    <p class="languages">
+                      <strong>Lingua: </strong>
+                      <flag class="flag_icon" :iso ="flag(movie)"/>
                     </p>
-                    <p>
-                      <strong>Titolo originale:</strong>
-                      {{serie.original_name}}
+                    <!-- /.languages -->          
+                    <p class="vote">
+                      <strong>Voto:</strong>
+                      <span v-for="vote in votes" :key="vote">
+                        <font-awesome-icon :class="stars(movie) > vote ? 'star_vote' : 'star_no_vote'" icon="fa-solid fa-star" />            
+                      </span>
                     </p>
-                  <p class="languages">
-                    <strong>Lingua: </strong>
-                    <flag class="flag_icon" :iso ="flag(serie)"/>
-                  </p>
-                  <!-- /.languages -->          
-                  <p class="vote">
-                    <strong>Voto:</strong>
-                    <span v-for="vote in votes" :key="vote">
-                      <font-awesome-icon :class="stars(serie) > vote ? 'star_vote' : 'star_no_vote'" icon="fa-solid fa-star" />            
-                    </span>
-                  </p>
-                  <!-- /.vote -->
-                  <p class="overview" v-if="serie.overview">
-                    <strong>Overview: </strong>
-                    {{serie.overview}}
-                  </p>
-                  <!-- /.overview -->
-                </div>
-              <!-- /.description -->
+                    <!-- /.vote -->
+                    <p class="overview" v-if="movie.overview">
+                      <strong>Overview: </strong>
+                      {{movie.overview}}
+                    </p>
+                    <!-- /.overview -->
+                  </div>
+                  <!-- /.card-body -->
                 </div>
                 <!-- /.back -->
               </div>
               <!-- /.card -->
+              </div>
+              <!-- /.container_card -->
             </div>
-            <!-- /.container_card -->
+            <!-- /.cols -->          
           </div>
-          <!-- /.cols -->          
+        </section>
+        <!-- /.films -->
 
-        </div>
+        <section class="series" v-if="series.length > 0">
+          <div class="title_section">
+            <h4>SERIES</h4>
+            <span>
+              <font-awesome-icon icon="fa-solid fa-film" />
+            </span>
+          </div>
+          <!-- /.title_section -->
+          <div class="row row-cols-6 w-100 g-2">
+            <div class="cols" v-for="serie in series" :key="serie.id">
+              <div class="container_card">
+                <div class="card">
+                  <div class="front">
+                    <img :src="serie.poster_path ? ('https://image.tmdb.org/t/p/w342' + serie.poster_path) : 'https://www.stardust.it/img/web/film-thumb-layer-placeholder.png'" :alt="serie.title">
+                  </div>
+                  <!-- /.front -->
+                  <div class="back">
+                  <div class="description">
+                      <p>
+                        <strong>Titolo:</strong>
+                        {{serie.name}}
+                      </p>
+                      <p>
+                        <strong>Titolo originale:</strong>
+                        {{serie.original_name}}
+                      </p>
+                    <p class="languages">
+                      <strong>Lingua: </strong>
+                      <flag class="flag_icon" :iso ="flag(serie)"/>
+                    </p>
+                    <!-- /.languages -->          
+                    <p class="vote">
+                      <strong>Voto:</strong>
+                      <span v-for="vote in votes" :key="vote">
+                        <font-awesome-icon :class="stars(serie) > vote ? 'star_vote' : 'star_no_vote'" icon="fa-solid fa-star" />            
+                      </span>
+                    </p>
+                    <!-- /.vote -->
+                    <p class="overview" v-if="serie.overview">
+                      <strong>Overview: </strong>
+                      {{serie.overview}}
+                    </p>
+                    <!-- /.overview -->
+                  </div>
+                <!-- /.description -->
+                  </div>
+                  <!-- /.back -->
+                </div>
+                <!-- /.card -->
+              </div>
+              <!-- /.container_card -->
+            </div>
+            <!-- /.cols -->          
+
+          </div>                
+        </section>
+        <!-- /.series -->
+
       </div>
       <!-- /.container -->
     </main>
@@ -156,7 +166,7 @@ export default {
       const serie = axios.get(`${this.API_URL_SERIE}${this.query}`);
 
       axios
-      Promise.all([movie, serie])
+      .all([movie, serie])
       .then(
         axios.spread((...n) => {
           const movies = n[0].data.results;
@@ -210,10 +220,10 @@ export default {
   display: none;
 }
 .star_vote {
-    color: #ffe43b;
+  color: #ffe43b;
 }
 .star_no_vote {
-    color: #a3adba;
+  color: #a3adba;
 }
 .flag_icon {
   width: 20px;
