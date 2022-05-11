@@ -21,7 +21,7 @@
             <font-awesome-icon icon="fa-solid fa-film" />
           </span>
           </h4>
-        <div class="row row-cols-6 w-100 g-3">
+        <div class="row row-cols-6 w-100 g-2">
           <div class="cols" v-for="movie in movies" :key="movie.id">
             <div class="container_card">
             <div class="card">
@@ -74,7 +74,7 @@
             <font-awesome-icon icon="fa-solid fa-film" />
           </span>
           </h4>
-        <div class="row row-cols-6 w-100 g-3">
+        <div class="row row-cols-6 w-100 g-2">
           <div class="cols" v-for="serie in series" :key="serie.id">
             <div class="container_card">
               <div class="card">

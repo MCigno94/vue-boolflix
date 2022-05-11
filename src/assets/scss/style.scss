@@ -24,10 +24,10 @@ p {
 
 header {
     height: 80px;
-    background: linear-gradient(270deg, #040404, #040404);
+    background: linear-gradient(270deg, #040404, rgb(40 21 21));
     .logo {
         img {
-            width: 220px;
+            width: 320px;
             height: 40px;
         }
     }
@@ -61,7 +61,7 @@ input:focus-visible {
 
 main {
     height: calc(100vh - 80px);
-    background-color: #100000f2;
+    background-color: rgb(15 2 2 / 83%);
     .container {
         height: 100%;
         padding-top: 2rem;
@@ -85,16 +85,15 @@ main {
         }
         .row::-webkit-scrollbar {
             width: 10px;
-            height: 7px;
+            height: 8px;
         }
         /* scrollbar */
         .row::-webkit-scrollbar-track {
-            background-color: #040404;
-            border-radius: 3px;
+            background-color: transparent;
         }
         /* sfondo delle scrollbar */
         .row::-webkit-scrollbar-thumb {
-            background-color: #922822;
+            background-color: #040404;
             border-radius: 3px;
         }
         /* colore delle scrollbar */
@@ -108,8 +107,7 @@ main {
     }
     /* scrollbar */
     .back::-webkit-scrollbar-track {
-        background-color: #040404;
-        border-radius: 3px;
+        background-color: transparent;
     }
     /* sfondo delle scrollbar */
     .back::-webkit-scrollbar-thumb {
