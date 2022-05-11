@@ -6,7 +6,7 @@
       </div>
       <!-- /.logo -->
       <form class="form" @submit.prevent="callApiMovie">
-        <input v-model="query" type="text">
+        <input placeholder="Cerca un film" v-model="query" type="text">
         <button @click="callApiMovie">
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
         </button>
