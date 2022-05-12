@@ -24,7 +24,7 @@
           </div>
             <!-- /.title_section -->
           <div class="row row-cols-6 w-100 g-2">
-            <div class="cols" v-for="movie in movies" :key="movie.id">
+            <div class="cols" v-for="(movie, index) in movies" :key="movie.id">
               <div class="container_card">
               <div class="card">
                 <div class="front">
@@ -33,15 +33,21 @@
                 <!-- /.front -->
                 <div class="back">
                   <div class="description">
-                      <p>
-                        <strong>Titolo:</strong>
-                        {{movie.title}}
-                      </p>
-                      <p>
-                        <strong>Titolo originale:</strong>
-                        {{movie.original_title}}
-                      </p>
-
+                    <p>
+                      <strong>Titolo:</strong>
+                      {{movie.title}}
+                    </p>
+                    <!-- title -->
+                    <p>
+                      <strong>Titolo originale:</strong>
+                      {{movie.original_title}}
+                    </p>
+                    <!-- original title -->
+                    <p>
+                      <strong>Cast:</strong>
+                      {{castMovie[index]}}
+                    </p>
+                    <!-- cast -->
                     <p class="languages">
                       <strong>Lingua: </strong>
                       <flag class="flag_icon" :iso ="flag(movie)"/>
@@ -82,7 +88,7 @@
           </div>
           <!-- /.title_section -->
           <div class="row row-cols-6 w-100 g-2">
-            <div class="cols" v-for="serie in series" :key="serie.id">
+            <div class="cols" v-for="(serie, index) in series" :key="serie.id">
               <div class="container_card">
                 <div class="card">
                   <div class="front">
@@ -91,14 +97,21 @@
                   <!-- /.front -->
                   <div class="back">
                   <div class="description">
-                      <p>
-                        <strong>Titolo:</strong>
-                        {{serie.name}}
-                      </p>
-                      <p>
-                        <strong>Titolo originale:</strong>
-                        {{serie.original_name}}
-                      </p>
+                    <p>
+                      <strong>Titolo:</strong>
+                      {{serie.name}}
+                    </p>
+                    <!-- title -->
+                    <p>
+                      <strong>Titolo originale:</strong>
+                      {{serie.original_name}}
+                    </p>
+                    <!-- original title -->
+                    <p>
+                      <strong>Cast:</strong>
+                      {{castSerie[index]}}
+                    </p>
+                    <!-- cast -->
                     <p class="languages">
                       <strong>Lingua: </strong>
                       <flag class="flag_icon" :iso ="flag(serie)"/>
@@ -153,43 +166,59 @@ export default {
       API_URL_SERIE: 'https://api.themoviedb.org/3/search/tv?api_key=a2c29c1744af97a151f88b2cd413254a&language=it-IT&page=1&include_adult=false&query=',
       query: '',
       movies: [],
+      castMovie: [],
+      idMovie: null,
+      idSerie: null,
       series: [],
-      allSearch: [],
+      castSerie: [],
       language: '',
       votes: 5,
-      loading: true
+      //loading: true
     }
   },
   methods: {
     callApiMovie(){
-      const movie = axios.get(`${this.API_URL_MOVIE}${this.query}`);
-      const serie = axios.get(`${this.API_URL_SERIE}${this.query}`);
 
+      /* Variabili locali per chiamata API */
+      let movie = axios.get(`${this.API_URL_MOVIE}${this.query}`);
+      let serie = axios.get(`${this.API_URL_SERIE}${this.query}`);
+
+      /* chiamata API */
       axios
       .all([movie, serie])
       .then(
         axios.spread((...n) => {
-          const movies = n[0].data.results;
-          const series = n[1].data.results;
+          let movies = n[0].data.results;
+          let series = n[1].data.results;
 
-          this.allSearch = []
+          /* push dei dati che mi servono nei data movies e series */
+          this.movies = []
           movies.forEach(movie => {
-          this.movies.push(movie)
+            this.movies.push(movie)
+            this.idMovie = movie.id
+            //console.log(this.idMovie);
           });
+
+          this.series = []
           series.forEach(serie => {
-          this.series.push(serie)
+            this.series.push(serie)
+            this.idSerie = serie.id            
           });
-          //console.log(this.allSearch);
+          this.callApiCast()
+          /* pulisco l'input */
+          this.query = ''
         })
-      )
-        .catch(error => {
-        console.log(error);
-        error;
-        this.error = `Sorry There is a problem! ${error}`
+      ) 
+      /* in caso la chiamata API non andasse a buon fine stampo l'errore */
+      .catch(error => {
+      console.log(error);
+      this.error = `Sorry There is a problem! ${error}`
       })
-        .finally(() => this.loading = false)
+      
+      //.finally(() => this.loading = false)
     },
     flag(element) {
+      /* imposto il valore della lingua con la corretta abbreviazione richiesta dalle icon flag */
       if(element.original_language === 'en'){
         return element.original_language = 'gb'
       } else if(element.original_language === 'ja') {
@@ -199,15 +228,48 @@ export default {
       }
     },
     stars(element){
+      /* divido *2 il valore con rating 0/10 in modo da restituire il valore massimo di 5 stelle e arrotondo */
       let votes = element.vote_average / 2;
       if((votes - Math.trunc(votes)) >= 0.5){
         return votes = Math.ceil(votes);
       } else {
         return votes = Math.floor(votes);
       }
+    },
+    callApiCast(){
+      /* Variabili chiamata API cast film/serie*/
+      let movieCast = axios.get(`https://api.themoviedb.org/3/movie/${this.idMovie}/credits?api_key=a2c29c1744af97a151f88b2cd413254a&language=it-IT`);
+      let serieCast = axios.get(`https://api.themoviedb.org/3/movie/${this.idSerie}/credits?api_key=a2c29c1744af97a151f88b2cd413254a&language=it-IT`);
+
+      /* chiamata API */
+      axios
+      .all([movieCast, serieCast])
+      .then(
+        axios.spread((...n) => {
+          let castNamesMovie = n[0].data.cast;
+          let castNamesSerie = n[1].data.cast;
+
+          /* push dei dati che mi servono nei data movies e series */
+          
+          castNamesMovie.forEach(castMovie => {
+            this.castMovie.push(castMovie.name)
+            //console.log(castMovie);
+            //console.log(this.castMovie);
+          })
+
+          castNamesSerie.forEach(castSerie => {
+            this.castSerie.push(castSerie.name)
+            //console.log(castMovie);
+            //console.log(this.castMovie);
+          })
+          
+        })
+        )      
+        .catch(error => {
+        console.log(error);
+        this.error = `Sorry There is a problem! ${error}`
+        })
     }
-  },
-  mounted() {
   },
 }
 </script>
